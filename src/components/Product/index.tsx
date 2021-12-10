@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import tshirtImage from "../../assets/tshirt.png";
+import { ProductAction } from "../ProductAction";
+import { SellerInfo } from "../SellerInfo";
+import ReactImageMagnify from "react-image-magnify";
 
 import {
   Container,
@@ -12,7 +15,29 @@ import {
   Description,
 } from "./styles";
 
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+  };
+}
+
 export function Product() {
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  );
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const { width } = windowDimensions;
+
   return (
     <Container>
       <Row>
@@ -23,19 +48,36 @@ export function Product() {
       <Panel>
         <Column>
           <Gallery>
-            <img src={tshirtImage} alt="T-shirt" />
+            <ReactImageMagnify
+              {...{
+                smallImage: {
+                  alt: "Wristwatch by Ted Baker London",
+                  isFluidWidth: false,
+                  src: tshirtImage,
+                  width: 343,
+                  height: 400,
+                },
+                largeImage: {
+                  src: tshirtImage,
+                  width: 800,
+                  height: 800,
+                },
+              }}
+            />
           </Gallery>
 
-          <Info />
+          {width > 768 && <Info />}
         </Column>
         <Column>
-          {/* <ProductAction />
-          <SellerInfo /> */}
+          <ProductAction />
+          <SellerInfo />
 
           <WarrantySection />
           <WarrantySection />
           <WarrantySection />
         </Column>
+
+        {width < 768 && <Info />}
       </Panel>
     </Container>
   );
@@ -43,7 +85,7 @@ export function Product() {
 
 const WarrantySection = () => (
   <Section>
-    <h4></h4>
+    <h4>Garantia</h4>
 
     <div>
       <span>

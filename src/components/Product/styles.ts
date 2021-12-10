@@ -31,6 +31,11 @@ export const Panel = styled.div`
 
   display: grid;
   grid-template-columns: 65fr 35fr;
+
+  @media (min-width: 300px) and (max-width: 720px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 export const Column = styled.div`
@@ -44,10 +49,6 @@ export const Gallery = styled.div`
   align-items: center;
   justify-content: center;
   height: 530px;
-
-  > img {
-    height: 73%;
-  }
 `;
 
 export const Section = styled.div`
